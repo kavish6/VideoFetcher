@@ -6,7 +6,6 @@ const videoSchema = new mongoose.Schema({
         type: String
     },
     description: {
-        required: true,
         type: String
     },
     publishedAt:{
@@ -18,6 +17,10 @@ const videoSchema = new mongoose.Schema({
         type:String,
     },
     query:{
+        required:true,
+        type:String,
+    },
+    url:{
         required:true,
         type:String,
     }
