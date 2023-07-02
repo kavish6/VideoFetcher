@@ -1,7 +1,8 @@
-const {  SimpleIntervalJob, AsyncTask } = require('toad-scheduler');
+const {  SimpleIntervalJob, AsyncTask,ToadScheduler } = require('toad-scheduler');
 const {getVideos}=require('./videoSearch');
 const {getLastTime}=require('../database/databaseHelper');
-const makeJob=(query)=>{
+const scheduler = new ToadScheduler();
+const startFetch=(query)=>{
     const task = new AsyncTask(
         'videoFetch', 
         async () => { 
@@ -23,6 +24,10 @@ const makeJob=(query)=>{
     }
     );
     const job = new SimpleIntervalJob({ seconds: 30,runImmediately:true }, task)
-    return job;
+    scheduler.addSimpleIntervalJob(job);
 }
-module.exports={makeJob};
+const stopFetch=()=>{
+    scheduler.stop();
+    return;
+}
+module.exports={startFetch,stopFetch};

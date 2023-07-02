@@ -1,6 +1,4 @@
-const mongoose = require('mongoose');
 const Video=require('../models/videosModel');
-
 const getLastTime=async(query)=>{
     try {
         let lastTime= await Video.find({query:query}).select('publishedAt').sort({publishedAt:-1}).limit(1).exec();
@@ -9,8 +7,16 @@ const getLastTime=async(query)=>{
         return null;
     }
 }
-const addVideo= async(video)=>{
-    const data= new Video(video);
+const addVideo=async(video)=>{
+    const data=new Video(video);
     await data.save();
 }
-module.exports={getLastTime,addVideo};
+const getVideos=async(page,limit)=>{
+    let data=await Video.find({}).sort({publishedAt:-1}).skip((page-1)*limit).limit(limit).exec();
+    return data;
+}
+const getCount=async()=>{
+    let count=await Video.countDocuments();
+    return count;
+}
+module.exports={getLastTime,addVideo,getVideos,getCount};
