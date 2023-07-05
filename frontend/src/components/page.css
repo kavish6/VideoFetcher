@@ -1,0 +1,41 @@
+.grid-container {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: auto auto auto;
+    padding: 10px;
+  }
+  .pageNumbers {
+    /* background-color: aqua; */
+    /* text-align: center; */
+    list-style: none;
+    display: flex;
+    justify-content: center;
+}
+.pageNumbers li{
+    padding: 10px;
+    border: 1px solid white;
+}
+
+.pageNumbers li.active {
+    background-color: yellow;
+    text-decoration: underline;
+    color: black;
+
+}
+
+.pageNumbers li.button{
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor:pointer;
+}
+
+.pageNumbers li.button:hover{
+    background-color: white;
+    color: black;
+}
+
+.pageNumbers li.button:focus{
+    outline: none;
+}

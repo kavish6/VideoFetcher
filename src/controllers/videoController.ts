@@ -2,7 +2,7 @@ import {getAllVideos,getCount,findVideos} from '../database/databaseHelper';
 const schedule=require('../utils/jobSchedule');
 let query='cricket';
 const getVideos=async(req,res)=>{
-const {page=1,limit=10}=req.query;
+const {page=1,limit= 10}=req.query;
 try {
     let videos=await getAllVideos(page,limit);
     let count=await getCount();
