@@ -1,7 +1,8 @@
 const {  SimpleIntervalJob, AsyncTask,ToadScheduler } = require('toad-scheduler');
-const {getVideos}=require('./videoSearch');
+const {fetchVideos}=require('./videoSearch');
 const {getLastTime}=require('../database/databaseHelper');
 const scheduler = new ToadScheduler();
+
 const startFetch=(query)=>{
     const task = new AsyncTask(
         'videoFetch', 
@@ -10,24 +11,31 @@ const startFetch=(query)=>{
         if(time===null)
         {
             let curTime=new Date('2023-01-01T00:00:00Z');
-            await getVideos(query,curTime);
+            await fetchVideos(query,curTime);
         }
         else
         {
             let curTime=new Date(time);
             curTime.setSeconds(curTime.getSeconds()+30);
-            await getVideos(query,curTime);
+            await fetchVideos(query,curTime);
         }
     },
     (err) => {  
         console.log(err);
     }
     );
-    const job = new SimpleIntervalJob({ seconds: 30,runImmediately:true }, task)
+    const job = new SimpleIntervalJob({ seconds: 30,runImmediately:true }, task,{'id':'fetch'});
     scheduler.addSimpleIntervalJob(job);
 }
 const stopFetch=()=>{
-    scheduler.stop();
-    return;
+    try {
+        if(scheduler.existsById('fetch'))
+        {
+            scheduler.stopById('fetch');
+            scheduler.removeById('fetch');
+        }
+    } catch (error) {
+     console.log(error);   
+    }
 }
-module.exports={startFetch,stopFetch};
+export {startFetch,stopFetch};

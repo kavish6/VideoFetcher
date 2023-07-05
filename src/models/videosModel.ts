@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const videoSchema = new mongoose.Schema({
     title: {
-        required: true,
+        required: isMyFieldRequired,
         type: String
     },
     description: {
@@ -10,20 +10,23 @@ const videoSchema = new mongoose.Schema({
     },
     publishedAt:{
         required:true,
-        type:String
+        type:Date,
     },
     thumbnail:{
         required:true,
         type:String,
     },
     query:{
-        required:true,
+        required:isMyFieldRequired,
         type:String,
     },
     url:{
         required:true,
         type:String,
     }
-})
+});
+function isMyFieldRequired () {
+    return typeof this.myField === 'string'? false : true
+}
 
-module.exports = mongoose.model('Video', videoSchema)
+export default mongoose.model('Video', videoSchema)

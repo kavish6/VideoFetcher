@@ -1,14 +1,22 @@
 const axios = require('axios');
 const {addVideo}=require('../database/databaseHelper');
-const getVideos=async(query,currentPublishedDate)=>{
+var keyReqCount=0,queueIndex=0;
+var keyQueue=[process.env.YOUTUBE_API_KEY1,process.env.YOUTUBE_API_KEY2,process.env.YOUTUBE_API_KEY3];
+const fetchVideos=async(query,currentPublishedDate)=>{
+    if(keyReqCount==10000)
+    {
+        keyReqCount=0;
+        queueIndex=(queueIndex+1)%3;
+    }
+    keyReqCount++;
     console.log('querying for videos');
     axios.get('https://www.googleapis.com/youtube/v3/search',{
         params:{
-            key:process.env.YOUTUBE_API_KEY,
+            key:keyQueue[queueIndex],
             part:"snippet",
             type:"video",
             order:"date",
-            maxResults:20,
+            maxResults:30,
             publishedAfter:currentPublishedDate.toISOString(),
             q:query
         }
@@ -29,4 +37,4 @@ const getVideos=async(query,currentPublishedDate)=>{
         console.log(error);
     });
 }
-module.exports={getVideos};
+module.exports={fetchVideos};
