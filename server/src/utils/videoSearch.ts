@@ -3,7 +3,7 @@ const {addVideo}=require('../database/databaseHelper');
 var keyReqCount=0,queueIndex=0;
 var keyQueue=[process.env.YOUTUBE_API_KEY1,process.env.YOUTUBE_API_KEY2,process.env.YOUTUBE_API_KEY3];
 const fetchVideos=async(query,currentPublishedDate)=>{
-    if(keyReqCount==10000)
+    if(keyReqCount===10000)
     {
         keyReqCount=0;
         queueIndex=(queueIndex+1)%3;
@@ -34,7 +34,9 @@ const fetchVideos=async(query,currentPublishedDate)=>{
         });
     })
     .catch(error => {
-        console.log(error);
+        // console.log(error);
+        queueIndex=(queueIndex+1)%3;
+        fetchVideos(query,currentPublishedDate);
     });
 }
 module.exports={fetchVideos};

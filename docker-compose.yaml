@@ -1,0 +1,23 @@
+
+version: '3.9'
+services:
+  node:
+    build: 
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: node-container
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./server:/app
+      # - ./app/node_modules
+  react:
+    build: 
+      context: ./frontend
+        # Name of the dockerfile
+      dockerfile: Dockerfile
+    container_name: react-container
+    ports:
+     # Host port:Container port
+      - '3001:3001'
+    stdin_open: true
