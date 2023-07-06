@@ -4,8 +4,8 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm i
-RUN npm ci --only=production
+RUN npm ci
+RUN npm install typescript -g
 COPY . .
 EXPOSE 3000
 RUN npm run build
