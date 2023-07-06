@@ -8,9 +8,6 @@ services:
     container_name: node-container
     ports:
       - '3000:3000'
-    volumes:
-      # - ./server:/app
-      # # - ./app/node_modules
   react:
     build: 
       context: ./frontend
